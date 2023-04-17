@@ -32,7 +32,5 @@ func PerformGetRequest(url string, apiKey string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	fmt.Println("Response code", response.StatusCode)
-	fmt.Println(apiKey)
 }

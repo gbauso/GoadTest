@@ -1,0 +1,9 @@
+{
+  "x-api-key": "test",
+  "csv-path": "C:\\projects\\GoadTest\\test.csv",
+  "baseurl": "https://test.com",
+  "route": "/test?${var}",
+  "concurrency": 1000,
+  "rpm": 500,
+  "duration": "10m0s"
+}
