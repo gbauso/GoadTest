@@ -1,2 +1,4 @@
 # GoadTest
-GoadTest is a cross-platform load-testing cli tool
+GoadTest is a load-testing CLI tool in GO
+
+Description/instructions will come soon.
