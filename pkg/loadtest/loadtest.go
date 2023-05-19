@@ -2,26 +2,25 @@ package loadtest
 
 import (
 	"fmt"
-	"github.com/TimLangePN/GoadTest/pkg/httprequest"
 	"sync"
 	"time"
+
+	"github.com/TimLangePN/GoadTest/pkg/httprequest"
 )
 
-func Run(data [][]string, rpm int, endTime time.Time) {
-
+func Run(data [][]string, rpm int, rampUpPeriod time.Duration, endTime time.Time) {
 	fmt.Println("======================================================")
 	fmt.Println("Starting load-test at:", time.Now().Format("2006-01-02 15:04:05.000000"))
 	fmt.Println("======================================================")
 
 	wg := sync.WaitGroup{}
-	interval := time.Minute / time.Duration(rpm)
 	dataIndex := 0
 	dataLen := len(data)
 
-	for {
-		if time.Now().After(endTime) {
-			break
-		}
+	interval := rampUpPeriod / time.Duration(rpm)
+	ticker := time.NewTicker(interval)
+
+	for time.Now().Before(endTime) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -32,9 +31,12 @@ func Run(data [][]string, rpm int, endTime time.Time) {
 
 			dataIndex = (dataIndex + 1) % dataLen
 		}()
-		time.Sleep(interval)
+
+		<-ticker.C
 	}
+
 	wg.Wait()
+	ticker.Stop()
 
 	fmt.Println("======================================================")
 	fmt.Println("Done load-testing:", time.Now().Format("2006-01-02 15:04:05.000000"))
